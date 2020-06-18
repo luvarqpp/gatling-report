@@ -60,6 +60,7 @@ public class App implements Runnable {
     }
 
     protected void parseSimulationFile(File file) {
+        final long startTime = System.currentTimeMillis();
         if(file.isDirectory()) {
             file = file.toPath().resolve("simulation.log").toFile();
         }
@@ -68,6 +69,8 @@ public class App implements Runnable {
         try {
             SimulationParser parser = ParserFactory.getParser(file, options.apdexT);
             stats.add(parser.parse());
+            final long endTime = System.currentTimeMillis();
+            log.info("Parsing finished in " + (endTime - startTime) + " ms. File " + file.getAbsolutePath());
         } catch (IOException e) {
             log.error("Invalid file: " + absolutePath, e);
         }
